@@ -1,33 +1,35 @@
-# community-chat-forensics｜社群／在线会话取证分析
+# community-chat-forensics | Customer Chat Forensics
 
-一个 Claude 技能（Agent Skill）。它教 Claude 按统一口径分析客户服务群或在线客服的聊天记录：
+A Claude skill (Agent Skill) that teaches Claude to analyze customer service group chats and online support conversations with a consistent method:
 
-- 把零散消息归并成一件件“咨询场景”；
-- 分类、打标签、记录群内可见状态；
-- 测量响应时延和断链，判断是否真正闭环；
-- 识别凭据外泄、不满信号、交接后消失等风险；
-- 找出跨场景的问题簇；
-- 输出案例索引、分类与处理方式、综合结论三层报告。
+- Merge scattered messages into distinct "consultation cases";
+- Classify, tag, and record the status visible in the chat;
+- Measure response times and broken chains, and judge whether each case was truly closed;
+- Identify risks such as credential exposure, dissatisfaction signals, and handoffs that went nowhere;
+- Find problem clusters that span multiple cases;
+- Produce a three-layer report: case index, categories and handling, and overall findings.
 
-适用于企业微信群、钉钉群、飞书群等客户服务群，以及在线客服会话记录。
+Works with customer service groups on WeCom (WeChat Work), DingTalk, Feishu/Lark, and similar platforms, as well as online support chat logs.
 
-## 安装
+## Installation
 
-- **Claude 网页版或桌面版**：把本文件夹打包成 zip，在“设置 → 技能（Skills）”中上传。
-- **Claude Code**：把本文件夹复制到 `~/.claude/skills/community-chat-forensics/`。
+- **Claude (web or desktop)**: Zip this folder, then upload it under Settings → Skills.
+- **Claude Code**: Copy this folder to `~/.claude/skills/community-chat-forensics/`.
 
-## 使用
+## Usage
 
-安装后，对 Claude 说：
+After installing, tell Claude:
 
-> 用社群取证分析这批聊天记录
+> Use community chat forensics to analyze these chat logs
 
-然后提供聊天记录（导出文件、截图或粘贴的文字均可）。Claude 会先确认资料范围、说话方名单和分析目的，再开始分析。
+Then provide the chat records (exported files, screenshots, or pasted text). Claude will first confirm the scope, the list of speakers, and the purpose of the analysis before it begins.
 
-## 隐私提醒
+## Privacy
 
-聊天记录通常包含客户和员工的个人信息。请在你有权处理这些数据的环境中使用本技能；分析结果对外分享前，请先替换或删除客户名称、人名、账号、链接和截图中的个人信息。本技能要求 Claude 不转录任何账号、密码和授权码。
+Chat logs usually contain personal information about customers and staff. Only use this skill where you are authorized to process such data. Before sharing results externally, replace or remove customer names, personal names, account IDs, links, and personal details in screenshots. The skill instructs Claude never to transcribe account names, passwords, or authorization codes.
 
-## 许可
+Note: the skill instructions (SKILL.md) are written in Chinese. Claude can still follow them and reply in English when asked.
 
-MIT License，见 [LICENSE](LICENSE)。
+## License
+
+MIT License. See [LICENSE](LICENSE).
