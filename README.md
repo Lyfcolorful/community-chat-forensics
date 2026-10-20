@@ -9,7 +9,7 @@ A Claude skill (Agent Skill) that teaches Claude to analyze customer service gro
 - Find problem clusters that span multiple cases;
 - Produce a three-layer report: case index, categories and handling, and overall findings.
 
-Works with customer service groups on WeCom (WeChat Work), DingTalk, Feishu/Lark, and similar platforms, as well as online support chat logs.
+Works with customer service groups on WeCom (WeChat Work), DingTalk, Feishu/Lark, Slack and similar platforms, as well as online support chat logs. Claude replies in the language you use.
 
 ## Installation
 
@@ -27,8 +27,6 @@ Then provide the chat records (exported files, screenshots, or pasted text). Cla
 ## Privacy
 
 Chat logs usually contain personal information about customers and staff. Only use this skill where you are authorized to process such data. Before sharing results externally, replace or remove customer names, personal names, account IDs, links, and personal details in screenshots. The skill instructs Claude never to transcribe account names, passwords, or authorization codes.
-
-Note: the skill instructions (SKILL.md) are written in Chinese. Claude can still follow them and reply in English when asked.
 
 ## License
 

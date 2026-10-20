@@ -1,128 +1,130 @@
 ---
 name: community-chat-forensics
-description: 分析客户社群或在线客服聊天记录：归并咨询场景、分类打标、判断闭环与断链、识别凭据外泄和经营信号，产出案例索引和综合结论。
+description: Analyze customer service group chats or online support logs - merge messages into consultation cases, classify and tag them, judge closure and broken chains, spot credential exposure and business signals, and produce a case index and findings report.
 ---
 
-# 社群／在线会话取证分析
+# Customer Chat Forensics
 
-本方法用于分析客户服务群（企业微信群、钉钉群、飞书群等）或在线客服的聊天记录。它不只是统计“回复快不快”，而是要看清三件事：客户的一件事有没有被持续负责到结果，断在哪里，哪些做法要改。
+Use this method to analyze chat records from customer service groups (WeCom/WeChat Work, DingTalk, Feishu/Lark, Slack, etc.) or online support conversations. The goal is not just to measure how fast replies come. It is to see three things clearly: whether each customer request was carried through to a result, where it broke down, and which practices need to change.
 
-## 什么时候用
+Reply in the user's language. Category, tag and status names below may be translated, but keep their meanings.
 
-- 拿到一批社群或在线客服的聊天记录，要分析服务现状。聊天记录可以是导出的 HTML、文本、截图，也可以是直接复制粘贴的内容。
-- 要为服务流程、规则、知识库或 AI 客服设计找证据。
-- 要复核某个群、某段时间或某个服务账号的处理情况。
+## When to use
 
-## 开始前先确认（缺一项就先问）
+- You have a batch of group chat or online support records and need to analyze the current state of service. Records can be exported HTML, text, screenshots or pasted content.
+- You need evidence to design service processes, rules, a knowledge base, or an AI support agent.
+- You need to review a specific group, time period, or support account.
 
-1. **资料范围**：哪些群、哪个时间段、来源文件在哪里。同一个群有多份导出时要先查重：内容完全相同的只算一份；时间范围更大的“超集”替换旧的，不重复计数。
-2. **说话方名单**：哪些账号是我方客服、客户经理或销售、其他我方人员；客户那边谁是管理员。可以先用导出自带的成员类型（如“企业成员／外部联系人”）、我方账号命名规则和用户给的名单自动识别，但**名单必须让用户确认**，不能只靠自动识别。
-3. **分析目的**：全面摸底、某类问题专项、还是服务做法比较。目的不同，输出的重点不同。
+## Confirm before starting (ask if any item is missing)
 
-## 步骤
+1. **Scope**: which groups, what time period, and where the source files are. Check for duplicates when a group has several exports: identical content counts once; a "superset" covering a longer period replaces the older one and is not counted twice.
+2. **Speaker list**: which accounts are our support agents, account managers or sales, and other staff; who on the customer side is an administrator. You may pre-identify speakers from member types in the export (e.g. "internal member / external contact"), our account naming rules, and any list the user provides, but **the user must confirm the list**. Never rely on automatic identification alone.
+3. **Purpose**: a full baseline review, a deep dive on one type of problem, or a comparison of service practices. The emphasis of the output depends on the purpose.
 
-### 1 转成纯文字并标注说话方
+## Steps
 
-- 把聊天记录转成逐条文字：时间｜说话人｜身份｜内容｜原消息链接。
-- 图片、视频、文件如果没有逐一核读，**必须在口径里写明“图片未核读”**，相关结论降级为“待核”。
-- 如果有“AI 答复”标签，要说清它指什么：通常不是 AI 在群里回复，而是客户先问了产品内的智能助手再来找人工，或者客服贴了智能助手的截图。
+### 1 Convert to plain text and label speakers
 
-### 2 归并成咨询场景
+- Convert the chat into one line per message: time | speaker | role | content | link to the original message.
+- If images, videos or files were not reviewed one by one, **state "images not reviewed" in the method notes**, and downgrade any conclusion that depends on them to "to be verified".
+- If there is an "AI answer" tag, explain what it means. Usually it is not an AI replying in the group: either the customer asked the in-product assistant first and then came to a human, or an agent pasted a screenshot of the assistant's answer.
 
-一个场景是客户要办成的一件事，不是一条消息，也不是一张工单。
+### 2 Merge messages into consultation cases
 
-- 同一诉求的追问、补充、催办合并为一个场景。一条消息里有多个独立诉求时，可以拆开，也可以按一个场景记录并注明“含 N 个子问题”。
-- 剔除欢迎语、宣传分享、表情和纯客套话（“好的”“谢谢”“收到”）。但客户的“好的”要保留，作为闭环证据。
-- 消息量大时，可以先按“4 小时无消息”自动切分，再人工精读合并。两种口径得出的数字不能直接比较，要分别写明。
-- 场景编号用“群代号＋序号”，如 A-01、B-12，每个场景附原消息链接。**群代号不要用客户真名缩写**，对外材料尤其如此。
+A case is one thing the customer is trying to get done. It is not a single message, and it is not a ticket.
 
-### 3 分类、打标签、记可见状态
+- Merge follow-ups, additions and chasers about the same request into one case. If one message contains several independent requests, split them, or record one case and note "contains N sub-questions".
+- Remove greetings, promotional posts, stickers and pure pleasantries ("OK", "thanks", "got it"). But keep a customer's "OK" as evidence of closure.
+- For large volumes, first split automatically at "no messages for 4 hours", then read and merge manually. Numbers from the two methods are not directly comparable; state which one you used.
+- Number cases as group code + sequence, e.g. A-01, B-12, and link each case to the original message. **Do not use abbreviations of real customer names as group codes**, especially in material shared outside the team.
 
-**主分类（每个场景只计一次，按主要处理路径归类）：**
+### 3 Classify, tag, and record visible status
 
-| 主分类 | 典型问题 |
+**Main category (one per case, by main handling path):**
+
+| Main category | Typical questions |
 |---|---|
-| 操作入口与资料导出 | 入口在哪、怎么导出、操作步骤 |
-| 业务规则与数据变更 | 考试、证书等业务规则；删除恢复；数据修改 |
-| 账号与权限 | 搜不到人、看不到数据、管理员调整、额度 |
-| 功能边界与新增需求 | 不支持、想要新功能、替代方案 |
-| 技术与异常排查 | 上传失败、状态异常、报错、兼容问题 |
-| 消息与通知 | 收不到通知、误发、撤回 |
-| 内部业务与系统协同 | 客户内部业务归属、数据同步链路 |
+| Navigation and data export | Where is the entry point, how to export, steps |
+| Business rules and data changes | Rules for exams, certificates, etc.; delete and restore; data edits |
+| Accounts and permissions | Cannot find a person, cannot see data, admin changes, quotas |
+| Feature limits and new requests | Not supported, wants a new feature, workarounds |
+| Technical issues and troubleshooting | Upload failures, abnormal status, errors, compatibility |
+| Messages and notifications | Notifications not received, sent by mistake, recalled |
+| Internal business and system coordination | Customer's internal ownership, data sync chains |
 
-分类可以按行业和产品调整，但调整后要在口径里写明。
+You may adapt categories to your industry and product, but state the changes in the method notes.
 
-**标签（可多选）：** 客户内部管理员、跨天、客户经理参与、重复进线、升级技术、升级产品、投诉不满、答复有误被纠正、凭据暴露、转私聊或电话、紧急影响、AI 答复。可以按需要加第二层标签（如海外、考试），避免同类问题被笼统处理。
+**Tags (multiple allowed):** customer internal admin, spans multiple days, account manager involved, repeat contact, escalated to engineering, escalated to product, complaint or dissatisfaction, wrong answer corrected, credential exposure, moved to private chat or phone, urgent impact, AI answer. Add second-level tags as needed (e.g. overseas, exams) so similar issues are not lumped together.
 
-**可见状态（只记群里看得到的）：** 已答复客户确认｜已给路径未见确认｜待客户内部处理｜需求未承接｜客户自行解决｜已升级未见结果｜群内未见答复｜已定位原因未见复测｜待客户信息。
+**Visible status (only what can be seen in the chat):** answered and confirmed by customer | path given, no confirmation seen | waiting on customer's internal handling | request not taken up | customer solved it themselves | escalated, no result seen | no answer seen in chat | cause located, no retest seen | waiting for customer information.
 
-### 4 测响应与断链
+### 4 Measure responses and broken chains
 
-- **诉求消息**：客户发出的、带疑问、求助、故障或申请意思的消息，剔除纯结束语。
-- **口径**：从诉求消息到 3 个自然日内我方在群里的首条回复。超过 24 小时才回复记为“超时已答”；3 天内群里没有我方回复记为“断链未响应”。同时报告中位时延。
-- **自动筛选后必须人工复核**，剔除误判：客户之间互相答疑、欢迎语模板、“已解决／没事了”这类收尾。报告时同时给出自动数和复核后的估计数。
-- **写明这个口径测不到的情况**：
-  - 我方回了“稍等”之后再无下文（要用场景口径补上）；
-  - 转私聊、电话后在群外处理的，群里看不见；
-  - 导出缺失的引用消息。
-- **断链根因**按四类归：非工作时段无人承接、升级后无人跟踪、权限断点、客户自救。
+- **Request message**: a customer message containing a question, a request for help, a fault report or an application; exclude pure closing remarks.
+- **Method**: time from the request message to our first reply in the chat within 3 calendar days. A first reply after more than 24 hours is "late reply"; no reply from us in the chat within 3 days is "broken chain, no response". Also report the median response time.
+- **Automatic results must be reviewed manually** to remove false hits: customers answering each other, welcome templates, and wrap-ups such as "solved / never mind". Report both the automatic count and the reviewed estimate.
+- **State what this method cannot measure**:
+  - we replied "one moment" and then nothing followed (cover this with the case-level method);
+  - work moved to private chat or phone is invisible in the group;
+  - quoted messages missing from the export.
+- **Root causes of broken chains** fall into four groups: no one covering outside working hours, no one tracking after escalation, permission dead ends, customers fixing it themselves.
 
-### 5 判断闭环，不把“没下文”当解决
+### 5 Judge closure; silence is not resolution
 
-- 我方主动确认问题已解决的比例要单独统计。
-- 以下几种情况分别记录，**都不能算满意闭环**：
-  - 客户自行解决；
-  - 静默结束：客户只回“好的”后不再出现；
-  - 勉强接受：客户带着不满接受了答复。
-- 修复后客户又重开、同一问题再次进线的，要关联到原场景。
+- Report separately the share of cases where we actively confirmed the problem was solved.
+- Record the following separately. **None of them counts as satisfied closure**:
+  - the customer solved it themselves;
+  - silent ending: the customer only said "OK" and never came back;
+  - reluctant acceptance: the customer accepted the answer while clearly unhappy.
+- If the customer reopens after a fix, or the same problem comes back, link it to the original case.
 
-### 6 识别风险和信号
+### 6 Identify risks and signals
 
-| 要找的 | 怎么记 |
+| What to look for | How to record it |
 |---|---|
-| 凭据暴露 | 只记录“发生了”和发生方（客户主动发／我方索要），**不转录任何账号、密码、授权码** |
-| 不满或投诉信号 | 列原话要点，作为经营信号交给客户经营负责人；与正式投诉分开计数 |
-| 交接后消失 | 转私聊、转同事、转会议、索要资料、换班之后没有下文，按形态分别列举 |
-| “不支持”之后无去向 | 有没有登记需求、有没有可对客户说的口径 |
-| 紧急影响 | 直播、培训现场、全员误发等；记录影响范围和首次响应时间 |
-| 代客操作 | 谁操作的、是否经客户同意、规则执行是否一致 |
-| 范畴外诉求 | 其他产品线、商务合作等，有没有转办回执 |
+| Credential exposure | Record only that it happened and who did it (customer posted it / we asked for it). **Never transcribe any account, password or authorization code** |
+| Dissatisfaction or complaint signals | Summarize the key words; pass them to the account owner as a business signal; count separately from formal complaints |
+| Handoff that went nowhere | Moved to private chat, passed to a colleague, moved to a meeting, asked for materials, shift change, then nothing; list by type |
+| "Not supported" with no next step | Was a request logged? Was there an answer the customer could be given? |
+| Urgent impact | Live broadcasts, on-site training, mistaken mass notifications, etc.; record scope of impact and time to first response |
+| Acting on the customer's behalf | Who did it, with or without the customer's consent, and whether the rule was applied consistently |
+| Out-of-scope requests | Other product lines, business partnerships, etc.; was there a handoff receipt? |
 
-### 7 找问题簇
+### 7 Find problem clusters
 
-同一根因跨多个场景或多个群出现时（如账号主数据同步、进度与状态不一致、平台级故障），要建“母事项＋子场景”：列出受影响客户清单，并提示恢复后逐个回访。重复进线是核查“能不能避免”的入口，但不能直接当作可消灭的问题量。
+When the same root cause appears across several cases or groups (e.g. account master-data sync, mismatched progress and status, platform-wide incidents), create a "parent issue + child cases": list the affected customers and note that each one should be followed up after recovery. Repeat contacts are the entry point for checking what was avoidable, but do not treat them directly as a volume of problems that can be eliminated.
 
-### 8 （可选）比较服务做法
+### 8 (Optional) Compare service practices
 
-- 只比较做法，**不评价个人**；样本少于 30 个场景的账号只作参考。
-- 指标：首次响应的中位数和 P90、理解偏差、话术是否生硬、是否直接贴智能助手原文、是否主动确认、凭据如何处理。
-- 差异要做显著性检验（如卡方检验），并写明客户群结构、问题类型等混杂因素。
+- Compare practices only; **do not evaluate individuals**. Treat accounts with fewer than 30 cases as reference only.
+- Metrics: median and P90 of first response, misunderstanding rate, whether the tone was curt, whether assistant answers were pasted verbatim, active confirmation, handling of credentials.
+- Test differences for significance (e.g. chi-square test), and state confounders such as customer mix and problem types.
 
-## 输出
+## Output
 
-按需要产出以下三层，先给结论：
+Produce the following three layers as needed, leading with the conclusions:
 
-1. **案例索引**（每个群一份）：
+1. **Case index** (one per group):
 
-| 编号 | 日期 | 主分类 | 咨询场景（链接原消息） | 群内证据与处理 | 可见状态 |
+| No. | Date | Main category | Case (link to original message) | Evidence and handling in chat | Visible status |
 |---|---|---|---|---|---|
 
-2. **分类与处理方式**：每类的场景数、典型问题、我们怎么处理、建议由谁负责；再挑 3—5 个具体案例，说明“应该改变哪些做法”。
-3. **综合结论**，依次写：
-   - 结论：3—5 条，带数字；
-   - 资料范围与口径；
-   - 规模与分布；
-   - 主要发现：每条写规模、例证编号、含义；
-   - 对服务设计的含义；
-   - 局限。
+2. **Categories and handling**: for each category, the number of cases, typical questions, how we handle it, and who should own it; then pick 3-5 concrete cases to show which practices should change.
+3. **Overall findings**, in this order:
+   - conclusions: 3-5 points, with numbers;
+   - scope and method;
+   - volume and distribution;
+   - main findings: for each, the scale, example case numbers, and what it means;
+   - implications for service design;
+   - limitations.
 
-## 必须守住的规矩
+## Rules that must hold
 
-- **可见状态不是解决率**，不能用来算解决率或时限达成率。
-- 区分事实、判断和推测。群里答复的产品规则只代表“当时的答复”，未经验证不写成现行规则。
-- 没有定位证据的原因只写“待排查”，不写成已证实的根因。
-- 每个数字都写清口径：是人工归并还是自动切分，分母是什么。
-- 引用案例要给编号和原消息链接，便于回查。
-- 客户和人员的个人信息只在必要时引用；凭据一律不转录。
-- 结论用于改进做法和设计，不用于考核个人。
-- 对外分享分析结果前先脱敏：客户名称、群名、人名、账号、链接、截图中的个人信息都要替换或删除。
+- **Visible status is not a resolution rate**, and must not be used to calculate resolution rates or SLA attainment.
+- Separate facts, judgments and guesses. Product rules stated in the chat only reflect "what was said at the time" and must not be written up as current rules unless verified.
+- A cause without supporting evidence is written as "to be investigated", never as a confirmed root cause.
+- State the method behind every number: manual merging or automatic splitting, and what the denominator is.
+- Cite cases with their number and a link to the original message so they can be traced.
+- Quote personal information about customers and staff only when necessary; never transcribe credentials.
+- Findings are for improving practices and design, not for appraising individuals.
+- Before sharing results outside the team, de-identify them: replace or remove customer names, group names, personal names, accounts, links and personal details in screenshots.
